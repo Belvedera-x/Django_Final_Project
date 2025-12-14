@@ -19,3 +19,6 @@ class Review(models.Model):
     class Meta:
         db_table = "reviews"
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=['housing', 'author'], name='unique_housing_user')
+        ]

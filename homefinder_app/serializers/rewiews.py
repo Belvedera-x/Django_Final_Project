@@ -1,0 +1,20 @@
+from rest_framework import serializers
+
+from homefinder_app.models import Review
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Review
+        fields = [
+            'id',
+            'housing',
+            'author',
+            'rating',
+            'text',
+            'created_at'
+        ]
+
+        read_only_fields = ['author', 'created_at']

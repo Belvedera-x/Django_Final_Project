@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 from homefinder_app.models import Housing
 from homefinder_app.serializers.housings import (
     HousingCreateUpdateSerializer,
-    HousingListSerializer, HousingDetailSerializer
+    HousingListSerializer,
+    HousingDetailSerializer
 )
 
 
