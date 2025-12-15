@@ -3,7 +3,7 @@ from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 
 from homefinder_app.enums import BookingStatus
-from homefinder_app.models import Housing, Booking
+from homefinder_app.models import Housing, Booking, Review
 from homefinder_app.serializers.rewiews import ReviewSerializer
 
 
@@ -30,3 +30,11 @@ class ReviewCreateView(generics.CreateAPIView):
             raise PermissionDenied("Вы можете оставить отзыв только после завершённой брони.")
 
         serializer.save(author=user, housing=housing)
+
+
+
+class ReviewListView(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(housing_id=self.kwargs['housing_id'])
