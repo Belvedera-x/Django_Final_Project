@@ -15,18 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from homefinder_app.views.housings import (
-    HousingToggleAvailableView,
-    HousingCreateView,
-    HousingUpdateView
-    )
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('housing/', HousingToggleAvailableView.as_view()),
-    path('housing/create/', HousingCreateView.as_view()),
-    path('housing/<int:pk>/update', HousingUpdateView.as_view()),
-    path('housing/<int:pk>/toggle-available/', HousingToggleAvailableView.as_view()),
+
+    path('api/users/', include('homefinder_app.urls.users')),
+    path('api/housings/', include('homefinder_app.urls.housings')),
+    path('api/bookings/', include('homefinder_app.urls.bookings')),
+    path('api/reviews/', include('homefinder_app.urls.rewiews')),
 ]
