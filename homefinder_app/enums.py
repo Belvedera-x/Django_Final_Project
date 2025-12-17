@@ -27,6 +27,7 @@ class HousingType(StrEnum):
     house = "House"
     studio = "Studio"
     room = "Room"
+    loft = "Loft"
 
     @classmethod
     def choices(cls):
