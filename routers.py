@@ -16,7 +16,7 @@ router.register('bookings', BookingViewSet)
 urlpatterns = [
     path('users/', include('homefinder_app.urls.users')),
     path('', include('homefinder_app.urls.housings')),
-    path('', include('homefinder_app.urls.rewiews')),
+    path('', include('homefinder_app.urls.reviews')),
 
     # path('token-auth/', obtain_auth_token),
     # path('jwt-auth/', TokenObtainPairView.as_view()),

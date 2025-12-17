@@ -5,12 +5,12 @@ from homefinder_app.models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField(read_only=True)
+    rating = serializers.IntegerField(min_value=1, max_value=5)
 
     class Meta:
         model = Review
         fields = [
             'id',
-            'housing',
             'author',
             'rating',
             'text',
