@@ -1,9 +1,12 @@
-from rest_framework import generics, status, permissions
 from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework import viewsets, filters, status
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from homefinder_app.filters import HousingFilter
+from homefinder_app.permissions.housing import HousingPermission
 from homefinder_app.models import Housing
+
 from homefinder_app.serializers.housings import (
     HousingCreateUpdateSerializer,
     HousingListSerializer,
@@ -11,71 +14,29 @@ from homefinder_app.serializers.housings import (
 )
 
 
-class HousingListView(generics.ListAPIView):
+class HousingViewSet(viewsets.ModelViewSet):
     queryset = Housing.objects.all()
-    serializer_class = HousingDetailSerializer
+    permission_classes = [HousingPermission]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = HousingFilter
+    search_fields = ['title', 'description']
+    ordering_fields = ['price', 'created_at']
+    ordering = ['-price']
 
-
-
-class HousingSearchView(generics.ListAPIView):
-    serializer_class = HousingListSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = Housing.objects.filter(available=True)
-        return queryset
-
-
-
-class HousingCreateView(generics.CreateAPIView):
-    serializer_class = HousingCreateUpdateSerializer
-    queryset = Housing.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return HousingListSerializer
+        elif self.action in ['create', 'update', 'partial_update']:
+            return HousingCreateUpdateSerializer
+        return HousingDetailSerializer
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 
-
-class HousingUpdateView(generics.UpdateAPIView):
-    serializer_class = HousingCreateUpdateSerializer
-    queryset = Housing.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_update(self, serializer):
-        serializer.save()
-
-
-
-class HousingDeleteView(generics.DestroyAPIView):
-    serializer_class = HousingDetailSerializer
-    queryset = Housing.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-
-    def delete(self, request, *args, **kwargs):
-        housing = self.get_object()
-
-        if housing.owner != request.user:
-            return Response(
-                {"detail": "You do not have permission to delete this housing."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
-        housing.delete()
-        return Response({"detail": "Housing deleted."}, status=status.HTTP_204_NO_CONTENT)
-
-
-
 class HousingToggleAvailableView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    def post(self, request, pk):
+    permission_classes = [HousingPermission]
+    def patch(self, request, pk):
         housing = get_object_or_404(Housing, pk=pk)
-
-        if housing.owner != request.user:
-            return Response(
-                {"detail": "You cannot modify this housing."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         housing.toggle_available()
-        return Response({"available": housing.available})
+        return Response({"available": housing.available}, status=status.HTTP_200_OK)
