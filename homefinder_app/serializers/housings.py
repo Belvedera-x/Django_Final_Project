@@ -14,6 +14,7 @@ class HousingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Housing
         fields = [
+            'id',
             'title',
             'city',
             'housing_type',

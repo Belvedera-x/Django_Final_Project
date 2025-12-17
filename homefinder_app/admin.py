@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
-from .models import User, Housing, Booking, Review
-from .enums import Role
+from homefinder_app.models import User, Housing, Booking, Review
+from homefinder_app.enums import Role
 
 
 

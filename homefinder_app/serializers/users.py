@@ -9,9 +9,6 @@ from homefinder_app.models import User
 
 
 class UserListSerializer(serializers.ModelSerializer):
-    posts_cnt = serializers.IntegerField(
-        required=False
-    )
 
     class Meta:
         model = User
@@ -19,7 +16,6 @@ class UserListSerializer(serializers.ModelSerializer):
             'id',
             'username',
             'email',
-            'posts_cnt',
             'role',
         ]
 
