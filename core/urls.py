@@ -18,12 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/users/', include('homefinder_app.urls.users')),
-    path('api/housings/', include('homefinder_app.urls.housings')),
-    path('api/bookings/', include('homefinder_app.urls.bookings')),
-    path('api/reviews/', include('homefinder_app.urls.rewiews')),
+    path('api/v1/', include('routers')),
 ]

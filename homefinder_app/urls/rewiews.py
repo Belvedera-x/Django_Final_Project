@@ -3,6 +3,6 @@ from django.urls import path
 from homefinder_app.views.reviews import ReviewCreateView, ReviewListView
 
 urlpatterns = [
-    path('<int:listing_id>/', ReviewListView.as_view()),
-    path('create/', ReviewCreateView.as_view()),
+    path('reviews/<int:housing_id>/', ReviewListView.as_view()),
+    path('housings/<int:housing_id>/reviews/', ReviewCreateView.as_view()),
 ]
