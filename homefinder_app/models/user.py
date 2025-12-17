@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.contrib.auth.models import PermissionsMixin
+from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 
 from django.utils import timezone
@@ -21,7 +22,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("role", Role.admin.name)  # ← вот это ключевая строка
+        extra_fields.setdefault("role", Role.admin.name)
 
         return self.create_user(email, password, **extra_fields)
 
@@ -48,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     birth_date = models.DateField(null=True, blank=True)
-    phone = models.CharField(max_length=45, null=True, blank=True)
+    phone = PhoneNumberField(null=True, blank=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
