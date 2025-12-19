@@ -50,6 +50,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         re_pattern = r"^[a-zA-Z]+$"
 
+        if not first_name:
+            raise serializers.ValidationError(
+                {"first_name": "Это поле обязательно к заполнению"}
+            )
+
+        if not last_name:
+            raise serializers.ValidationError(
+                {"last_name": "Это поле обязательно к заполнению"}
+            )
+
         if not re.match(re_pattern, first_name):
             raise serializers.ValidationError(
                 {

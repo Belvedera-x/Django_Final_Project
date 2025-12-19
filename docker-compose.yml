@@ -23,6 +23,23 @@ services:
     ports:
       - "33066:3306"
 
+  web:
+    build:
+      dockerfile: Dockerfile
+    restart: always
+    container_name: homefinder_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+#      - DJANGO_SETTINGS_MODULE=core.settings
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PORT=3306
 
 volumes:
   mysql_data:
