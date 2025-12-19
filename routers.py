@@ -14,7 +14,6 @@ router.register('bookings', BookingViewSet)
 
 
 urlpatterns = [
-    path('users/', include('homefinder_app.urls.users')),
     path('', include('homefinder_app.urls.housings')),
     path('', include('homefinder_app.urls.reviews')),
 
