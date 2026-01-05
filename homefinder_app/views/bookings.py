@@ -62,12 +62,6 @@ class BookingViewSet(viewsets.ModelViewSet):
             {"status": booking.status},
             status=status.HTTP_200_OK
         )
-    # @action(detail=True, methods=['post'], permission_classes=[BookingActionPermission])
-    # def approve(self, request, pk=None):
-    #     booking = self.get_object()
-    #     booking.status = 'approved'
-    #     booking.save()
-    #     return Response({"status": booking.status})
 
     @action(detail=True, methods=['post'], permission_classes=[BookingActionPermission])
     def reject(self, request, pk=None):

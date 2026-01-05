@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
