@@ -1,7 +1,5 @@
-from rest_framework.generics import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -41,10 +39,11 @@ class HousingViewSet(viewsets.ModelViewSet):
         serializer = HousingListSerializer(queryset, many=True)
         return Response(serializer.data)
 
-
-class HousingToggleAvailableView(APIView):
-    permission_classes = [HousingPermission]
-    def patch(self, request, pk):
-        housing = get_object_or_404(Housing, pk=pk)
+    @action(detail=True, methods=['patch'])
+    def toggle_available(self, request, pk=None):
+        housing = self.get_object()
         housing.toggle_available()
-        return Response({"available": housing.available}, status=status.HTTP_200_OK)
+        return Response(
+            {"available": housing.available},
+            status=status.HTTP_200_OK
+        )
